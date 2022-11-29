@@ -16,7 +16,7 @@ data "aws_ami" "app_ami" {
 
 resource "aws_instance" "blog" {
   ami           = data.aws_ami.app_ami.id
-  instance_type = var.instance.type"
+  instance_type = var.instance.type
 
   tags = {
     Name = "HelloWorld"
