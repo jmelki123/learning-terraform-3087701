@@ -92,5 +92,3 @@ module "blog_sg" {
   egress_rules = ["all-all"]
   egress_cidr_blocks = ["0.0.0.0/0"]
 }
-Footer
-© 2022 GitHub, Inc.
