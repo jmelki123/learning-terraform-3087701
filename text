@@ -13,3 +13,16 @@ If(
     Reset(txtSourceGroup),
     Notify("Please fill in all required fields.", NotificationType.Error)
 )
+
+
+
+Set(
+    varCSV,
+    "RuleName,Source,SourceGroup" & Char(10) &
+    Concat(
+        colRules,
+        RuleName & "," & Source & "," & SourceGroup,
+        Char(10)
+    )
+);
+Download("ExportedRules.csv", varCSV)
