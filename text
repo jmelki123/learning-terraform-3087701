@@ -1,3 +1,18 @@
+
+Collect(
+    colFirewallRules,
+    {
+        RuleName: txtRuleName.Text,
+        Sources: txtSources.Text,
+        SourceGroup: txtSourceGroup.Text,
+        SourceUserGroup: txtSourceUserGroup.Text,
+        Destinations: txtDestinations.Text
+    }
+);
+Reset(txtRuleName); Reset(txtSources); Reset(txtSourceGroup); Reset(txtSourceUserGroup); Reset(txtDestinations)
+
+
+
 If(
     !IsMatch(txtRequestor.Text, "^[A-Za-z0-9_-]+$"),
     Notify("Requestor name must only contain letters, numbers, hyphens or underscores", NotificationType.Error),
