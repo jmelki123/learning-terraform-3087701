@@ -15,14 +15,14 @@ If(
 )
 
 
+// 1. Create the CSV header
+Set(varCSVHeader, "RuleName,Source,SourceGroup" & Char(10));
 
-Set(
-    varCSV,
-    "RuleName,Source,SourceGroup" & Char(10) &
-    Concat(
-        colRules,
-        RuleName & "," & Source & "," & SourceGroup,
-        Char(10)
-    )
-);
-Download("ExportedRules.csv", varCSV)
+// 2. Create the CSV body by concatenating the records from the collection
+Set(varCSVBody, Concat(colRules, RuleName & "," & Source & "," & SourceGroup, Char(10)));
+
+// 3. Combine the header and body
+Set(varFullCSV, varCSVHeader & varCSVBody);
+
+// 4. Launch the download using a data URI, which is more reliable
+Launch("data:text/csv;charset=utf-8," & EncodeUrl(varFullCSV))
