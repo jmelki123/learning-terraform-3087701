@@ -1,4 +1,20 @@
 
+{
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "RuleName": { "type": "string" },
+      "Sources": { "type": "string" },
+      "SourceGroup": { "type": "string" },
+      "SourceUserGroup": { "type": "string" },
+      "Destinations": { "type": "string" }
+    }
+  }
+}
+
+
+------
 Collect(
     colFirewallRules,
     {
