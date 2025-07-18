@@ -13,3 +13,12 @@ If(
 
     SubmitForm(EditForm1)
 )
+
+
+
+If(
+    !IsBlank(txtRequestor.Text) && !IsMatch(txtRequestor.Text, "^[A-Za-z0-9_-]+$"),
+    Red,
+    Gray
+)
+
