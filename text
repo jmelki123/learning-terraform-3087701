@@ -1,55 +1,15 @@
-
-{
-  "type": "array",
-  "items": {
-    "type": "object",
-    "properties": {
-      "RuleName": { "type": "string" },
-      "Sources": { "type": "string" },
-      "SourceGroup": { "type": "string" },
-      "SourceUserGroup": { "type": "string" },
-      "Destinations": { "type": "string" }
-    }
-  }
-}
-
-
-------
-Collect(
-    colFirewallRules,
-    {
-        RuleName: txtRuleName.Text,
-        Sources: txtSources.Text,
-        SourceGroup: txtSourceGroup.Text,
-        SourceUserGroup: txtSourceUserGroup.Text,
-        Destinations: txtDestinations.Text
-    }
-);
-Reset(txtRuleName); Reset(txtSources); Reset(txtSourceGroup); Reset(txtSourceUserGroup); Reset(txtDestinations)
-
-
-
 If(
-    !IsMatch(txtRequestor.Text, "^[A-Za-z0-9_-]+$"),
-    Notify("Requestor name must only contain letters, numbers, hyphens or underscores", NotificationType.Error),
-
-    !IsMatch(txtIPAddress.Text, "^(\d{1,3}\.){3}\d{1,3}$"),
-    Notify("Enter a valid IPv4 address (e.g., 192.168.1.1)", NotificationType.Error),
-
-    IsBlank(txtJustification.Text),
-    Notify("Business Justification is required", NotificationType.Error),
-
-    IsBlank(txtGroupName.Text),
-    Notify("Group Name is required", NotificationType.Error),
-
-    SubmitForm(EditForm1)
+    !IsBlank(txtRuleName.Text) && !IsBlank(txtSource.Text) && !IsBlank(txtSourceGroup.Text),
+    Collect(
+        colRules,
+        {
+            RuleName: txtRuleName.Text,
+            Source: txtSource.Text,
+            SourceGroup: txtSourceGroup.Text
+        }
+    );
+    Reset(txtRuleName);
+    Reset(txtSource);
+    Reset(txtSourceGroup),
+    Notify("Please fill in all required fields.", NotificationType.Error)
 )
-
-
-
-If(
-    !IsBlank(txtRequestor.Text) && !IsMatch(txtRequestor.Text, "^[A-Za-z0-9_-]+$"),
-    Red,
-    Gray
-)
-
