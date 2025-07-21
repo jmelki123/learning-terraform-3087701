@@ -1,28 +1,34 @@
-If(
-    !IsBlank(txtRuleName.Text) && !IsBlank(txtSource.Text) && !IsBlank(txtSourceGroup.Text),
-    Collect(
-        colRules,
-        {
-            RuleName: txtRuleName.Text,
-            Source: txtSource.Text,
-            SourceGroup: txtSourceGroup.Text
-        }
-    );
-    Reset(txtRuleName);
-    Reset(txtSource);
-    Reset(txtSourceGroup),
-    Notify("Please fill in all required fields.", NotificationType.Error)
-)
+// 1. Clear previous results
+UpdateContext({
+    showChoices: false,
+    finalGroup: ""
+});
 
+// 2. Perform a delegable query to Dataverse and store results in a collection
+ClearCollect(
+    colResults,
+    Filter(
+        'IP Object Directories',
+        IPAddress = txtIPInput.Text
+    )
+);
 
-// 1. Create the CSV header
-Set(varCSVHeader, "RuleName,Source,SourceGroup" & Char(10));
+// 3. Check how many results were found and decide what to do
+Switch(
+    CountRows(colResults),
+    0, // Case: No results found
+    UpdateContext({finalGroup: "Not Found"}),
 
-// 2. Create the CSV body by concatenating the records from the collection
-Set(varCSVBody, Concat(colRules, RuleName & "," & Source & "," & SourceGroup, Char(10)));
+    1, // Case: Exactly one result found
+    UpdateContext({finalGroup: First(colResults).GroupName}),
 
-// 3. Combine the header and body
-Set(varFullCSV, varCSVHeader & varCSVBody);
+    // Default Case: More than one result found
+    UpdateContext({showChoices: true})
+);
 
-// 4. Launch the download using a data URI, which is more reliable
-Launch("data:text/csv;charset=utf-8," & EncodeUrl(varFullCSV))
+------------
+
+UpdateContext({
+    finalGroup: Self.Selected.GroupName,
+    showChoices: false
+})
